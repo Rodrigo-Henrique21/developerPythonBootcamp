@@ -23,7 +23,6 @@ def depositar(saldo, extrato):
 def sacar(saldo, extrato, limiteSaque, numeroSaques, limiteSaquesDia):
     valor = float(input("Informe o valor do saque: R$ "))
     sucesso = False
-    # Verificações de saque
     if valor <= 0:
         print("Valor inválido para saque.")
     elif valor > saldo:
@@ -38,7 +37,7 @@ def sacar(saldo, extrato, limiteSaque, numeroSaques, limiteSaquesDia):
         numeroSaques += 1
         print(f"Saque de R$ {valor:.2f} realizado com sucesso!")
         sucesso = True
-    
+
     return saldo, extrato, numeroSaques, sucesso
 
 def exibirExtrato(saldo, extrato):
@@ -51,6 +50,14 @@ def exibirExtrato(saldo, extrato):
     print(f"\nSaldo atual: R$ {saldo:.2f}")
     print("=============================\n")
 
+def transacaoPermitida(transacoesDia, limiteTransacoesDia, extrato):
+    if transacoesDia < limiteTransacoesDia:
+        return True
+    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    extrato.append(f"Transação não permitida: Limite diário excedido em {now}")
+    print("Limite diário de transações excedido. Não é possível realizar a operação.")
+    return False
+
 def main():
     saldo = 0.0
     limiteSaque = 500.0
@@ -59,37 +66,29 @@ def main():
     limiteSaquesDia = 3
     transacoesDia = 0
     limiteTransacoesDia = 10
-    
+
     while True:
         opcao = exibirMenu()
-        
+
         if opcao == "1":
-            if transacoesDia < limiteTransacoesDia:
+            if transacaoPermitida(transacoesDia, limiteTransacoesDia, extrato):
                 saldo, extrato, sucesso = depositar(saldo, extrato)
                 if sucesso:
                     transacoesDia += 1
-            else:
-                now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                extrato.append(f"Transação não permitida: Limite diário excedido em {now}")
-                print("Limite diário de transações excedido. Não é possível realizar a operação.")
-        
+
         elif opcao == "2":
-            if transacoesDia < limiteTransacoesDia:
+            if transacaoPermitida(transacoesDia, limiteTransacoesDia, extrato):
                 saldo, extrato, numeroSaques, sucesso = sacar(saldo, extrato, limiteSaque, numeroSaques, limiteSaquesDia)
                 if sucesso:
                     transacoesDia += 1
-            else:
-                now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                extrato.append(f"Transação não permitida: Limite diário excedido em {now}")
-                print("Limite diário de transações excedido. Não é possível realizar a operação.")
-        
+
         elif opcao == "3":
             exibirExtrato(saldo, extrato)
-        
+
         elif opcao == "4":
             print("Saindo do sistema...")
             break
-        
+
         else:
             print("Opção inválida. Tente novamente.")
 

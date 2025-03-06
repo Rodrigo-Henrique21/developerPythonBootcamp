@@ -87,3 +87,4 @@ O GitHub Copilot representa um avanço significativo na forma como desenvolvedor
 > **Dica:** Mesmo com uma ferramenta tão poderosa, ainda é crucial manter boas práticas de desenvolvimento, incluindo testes, revisões de código e aprendizado contínuo. A adoção do Copilot deve ser consciente, complementando – e não substituindo – o conhecimento humano.
 
 ---
+
